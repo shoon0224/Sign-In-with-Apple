@@ -11,18 +11,22 @@ import AuthenticationServices //애플 로그인 필수 프레임워크
 class ViewController: UIViewController, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
     
     @IBOutlet var loginProviderStackView: UIStackView!
+    @IBOutlet var lblLoginID: UILabel!
+    @IBOutlet var lblName: UILabel!
+    @IBOutlet var lblEmail: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupProviderLoginView() //View에 "Sign In with Apple" 버튼 보이기
+        
     }
     
     func setupProviderLoginView() {
         let authorizationButton = ASAuthorizationAppleIDButton()
         authorizationButton.addTarget(self, action: #selector(handleAuthorizationAppleIDButtonPress), for: .touchUpInside)
 
-        self.loginProviderStackView.addSubview(authorizationButton)
+        self.loginProviderStackView.addArrangedSubview (authorizationButton)
         
     } // 프레임워크에서 제공하는 "Sign In with Apple" 타입과 스타일
     
@@ -47,6 +51,11 @@ class ViewController: UIViewController, ASAuthorizationControllerDelegate, ASAut
             let userIdentifier = appleIDCredential.user
             let fullName = appleIDCredential.fullName
             let email = appleIDCredential.email
+            
+            lblLoginID.text = userIdentifier
+            lblName.text = fullName?.givenName
+            lblEmail.text = email
+            
             
             print("User ID : \(userIdentifier)")
             print("User Email : \(email ?? "")")
